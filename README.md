@@ -36,6 +36,6 @@ Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 
 [mit]:            http://opensource.org/licenses/MIT
 [author]:         http://github.com/coderstephen
-[contributors]:   https://github.com/coderstephen/plugin-weather/graphs/contributors
+[contributors]:   https://github.com/oh-my-fish/plugin-weather/graphs/contributors
 [omf-link]:       https://www.github.com/oh-my-fish/oh-my-fish
 [license-badge]:  https://img.shields.io/badge/license-MIT-007EC7.svg?style=flat-square
