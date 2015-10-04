@@ -6,15 +6,24 @@ function weather -d "Displays local weather info"
   end
 
   # Get our external IP using DNS
-  set ip (dig +short myip.opendns.com @resolver1.opendns.com)
+  if not set ip (dig +short myip.opendns.com @resolver1.opendns.com)
+    echo "No Internet connection available."
+    return 1
+  end
 
   # Fetch location data based on our IP
-  set geoip_data (curl -s "http://geoip.nekudo.com/api/$ip")
+  if not set geoip_data (curl -s "http://geoip.nekudo.com/api/$ip")
+    echo "Unable to query GeoIP data; please try again later."
+    return 1
+  end
   set latitude (echo $geoip_data | jq '.location.latitude')
   set longitude (echo $geoip_data | jq '.location.longitude')
 
   # Fetch weather data based on the location
-  set weather_data (curl -s "http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude")
+  if not set weather_data (curl -s "http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude")
+    echo "Unable to fetch weather data; please try again later."
+    return 1
+  end
   set temp_K (echo $weather_data | jq '.main.temp')
   set temp_C (math "$temp_K - 273.15")
   set temp_F (math "$temp_C * 1.8 + 32")
@@ -28,8 +37,13 @@ function weather -d "Displays local weather info"
 
   # Display forecast summary
   echo "Temperature: $temp_C °C ($temp_F °F)"
-  echo Relative humidity: (echo $weather_data | jq '.main.humidity')%
-  echo Cloudiness: (echo $weather_data | jq -r '.weather[0].description')
-  echo Pressure: (echo $weather_data | jq '.main.pressure') hpa
-  echo "Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s gusting to $wind_gust m/s"
+  echo "Relative humidity: "(echo $weather_data | jq '.main.humidity')"%"
+  echo "Cloudiness: "(echo $weather_data | jq -r '.weather[0].description')
+  echo "Pressure: "(echo $weather_data | jq '.main.pressure')" hpa"
+  echo -n "Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s"
+  if test $wind_gust -eq null
+    echo "gusting to $wind_gust m/s"
+  else
+    echo
+  end
 end
