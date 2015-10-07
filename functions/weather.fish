@@ -5,10 +5,18 @@ function weather -d "Displays local weather info"
     return 1
   end
 
-  # Get our external IP using DNS
-  if not set ip (dig +short myip.opendns.com @resolver1.opendns.com)
-    echo "No Internet connection available."
+  # Attempt to get our external IP using the default DNS resolver
+  if not set ip (dig +short myip.opendns.com)
+    echo "No Internet connection unavailable."
     return 1
+  end
+
+  # Attempt to get our external IP using a web service
+  if test -z $ip
+    if not set ip (curl -s ipecho.net/plain)
+      echo "No Internet connection or IP service unavailable."
+      return 1
+    end
   end
 
   # Fetch location data based on our IP
