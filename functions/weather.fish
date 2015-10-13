@@ -6,7 +6,7 @@ function weather -d "Displays local weather info"
   end
 
   # Attempt to get our external IP using the default DNS resolver
-  if not set ip (dig +short myip.opendns.com)
+  if not set ip (dig +short myip.opendns.com @resolver1.opendns.com)
     echo "No Internet connection unavailable."
     return 1
   end
