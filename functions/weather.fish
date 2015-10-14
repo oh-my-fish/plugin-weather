@@ -28,7 +28,7 @@ function weather -d "Displays local weather info"
   set longitude (echo $geoip_data | jq '.location.longitude')
 
   # Fetch weather data based on the location
-  if not set weather_data (curl -s "http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude")
+  if not set weather_data (curl -s "http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&APPID=$__weather_api_key")
     echo "Unable to fetch weather data; please try again later."
     return 1
   end
