@@ -32,9 +32,7 @@ function weather -d "Displays local weather info"
     echo "Unable to fetch weather data; please try again later."
     return 1
   end
-  set temp_K (echo $weather_data | jq '.main.temp')
-  set temp_C (math "$temp_K - 273.15")
-  set temp_F (math "$temp_C * 1.8 + 32")
+  set temp (echo $weather_data | jq '.main.temp')
   set wind_speed (echo $weather_data | jq '.wind.speed')
   set wind_gust (echo $weather_data | jq '.wind.gust')
   set wind_deg (echo $weather_data | jq '.wind.deg')
@@ -44,7 +42,7 @@ function weather -d "Displays local weather info"
   set wind_dir $directions[(math "(($wind_deg % 360) / 45) + 1")]
 
   # Display forecast summary
-  echo "Temperature: $temp_C °C ($temp_F °F)"
+  echo "Temperature: "(__weather_print_temperature $temp)
   echo "Relative humidity: "(echo $weather_data | jq '.main.humidity')"%"
   echo "Cloudiness: "(echo $weather_data | jq -r '.weather[0].description')
   echo "Pressure: "(echo $weather_data | jq '.main.pressure')" hpa"
@@ -53,5 +51,40 @@ function weather -d "Displays local weather info"
     echo "gusting to $wind_gust m/s"
   else
     echo
+  end
+end
+
+
+# Prints the given temperature to the console.
+#
+# Arguments:
+#   1: The temperature to display in Kelvin.
+#
+# The units displayed depend on the global `temperature_units` variable.
+function __weather_print_temperature
+  set kelvin $argv[1]
+
+  if not set -q temperature_units
+    set temperature_units default
+  end
+
+  if test "$temperature_units" = "kelvin"
+    echo "$kelvin K"
+    return 0
+  end
+
+  set celsius (math "$kelvin - 273.15")
+
+  if test $temperature_units = "celsius"
+    echo "$celsius °C"
+    return 0
+  end
+
+  set fahrenheit (math "$celsius * 1.8 + 32")
+
+  if test $temperature_units = "fahrenheit"
+    echo "$fahrenheit °F"
+  else
+    echo "$celsius °C ($fahrenheit °F)"
   end
 end

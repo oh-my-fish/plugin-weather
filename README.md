@@ -29,6 +29,29 @@ Pressure: 1029 hpa
 Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 ```
 
+
+## Configuring
+You can customize the display of weather data using global variables. By default, both Celsius and Fahrenheit is displayed for the temperature. You can override this by specifying a particular unit to use in `$fahrenheit_units`. Valid options are:
+
+- `celsius`
+- `fahrenheit`
+- `kelvin`
+
+You can see the results by changing the value and running `weather` again:
+
+```fish
+$ set -g fahrenheit_units celsius
+$ weather
+Temperature: 14.37 °C
+Relative humidity: 58%
+Cloudiness: sky is clear
+Pressure: 1029 hpa
+Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
+```
+
+You can set this permanently by adding the set command in your `init.fish` file.
+
+
 # License
 
 [MIT][mit] © [coderstephen][author] et [al][contributors]
