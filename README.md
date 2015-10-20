@@ -51,6 +51,12 @@ Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 
 You can set this permanently by adding the set command in your `init.fish` file.
 
+You can also configure the weather command to use the system default DNS resolver to fetch your IP address if one is configured.
+
+```fish
+$ set -g __weather_system_dns 1
+```
+
 
 # License
 

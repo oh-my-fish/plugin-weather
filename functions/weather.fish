@@ -5,18 +5,10 @@ function weather -d "Displays local weather info"
     return 1
   end
 
-  # Attempt to get our external IP using the default DNS resolver
-  if not set ip (dig +short myip.opendns.com)
-    echo "No Internet connection unavailable."
+  # Attempt to get our external IP address.
+  if not set ip (__weather_get_ip)
+    echo "No Internet connection or IP service unavailable."
     return 1
-  end
-
-  # Attempt to get our external IP using a web service
-  if test -z $ip
-    if not set ip (curl -s ipecho.net/plain)
-      echo "No Internet connection or IP service unavailable."
-      return 1
-    end
   end
 
   # Fetch location data based on our IP
@@ -52,6 +44,30 @@ function weather -d "Displays local weather info"
   else
     echo
   end
+end
+
+
+# Gets the current device's public IP address.
+function __weather_get_ip
+  # Attempt to get our external IP using the OpenDNS resolver.
+  if test "$__weather_system_dns" -eq "1"
+    if not set ip (dig +short myip.opendns.com)
+      return 1
+    end
+  else
+    if not set ip (dig +short myip.opendns.com @resolver1.opendns.com)
+      return 1
+    end
+  end
+
+  # Attempt to get our external IP using a web service.
+  if test -z $ip
+    if not set ip (curl -s ipecho.net/plain)
+      return 1
+    end
+  end
+
+  echo $ip
 end
 
 
