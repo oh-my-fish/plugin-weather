@@ -22,16 +22,25 @@ $ omf install weather
 
 ```fish
 $ weather
+Weather for Madison, United States
+
 Temperature: 14.37 °C (57.86 °F)
-Relative humidity: 58%
-Cloudiness: sky is clear
-Pressure: 1029 hpa
-Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
+   Humidity: 58%
+ Cloudiness: sky is clear
+   Pressure: 1029 hpa
+       Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
+
+5-day forecast
+Temperature:   ▃▂▃▆▆▃▂▁▁▁▂▅▆▃▂▂▃▄▆██▇██▇▆▅▅▅▅▄▄▄▅▆▇█▅
+               28/11  29/11  30/11  01/12  02/12  03/12
+
+Precipitation: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▅█▃▁▁▁▁▁▁▁▁▁▁▁▁▁
+               28/11  29/11  30/11  01/12  02/12  03/12
 ```
 
 
 ## Configuring
-You can customize the display of weather data using global variables. By default, both Celsius and Fahrenheit is displayed for the temperature. You can override this by specifying a particular unit to use in `$fahrenheit_units`. Valid options are:
+You can customize the display of weather data using global variables. By default, both Celsius and Fahrenheit is displayed for the temperature. You can override this by specifying a particular unit to use in `$temperature_units`. Valid options are:
 
 - `celsius`
 - `fahrenheit`
@@ -40,13 +49,13 @@ You can customize the display of weather data using global variables. By default
 You can see the results by changing the value and running `weather` again:
 
 ```fish
-$ set -g fahrenheit_units celsius
+$ set -g temperature_units celsius
 $ weather
 Temperature: 14.37 °C
-Relative humidity: 58%
-Cloudiness: sky is clear
-Pressure: 1029 hpa
-Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
+   Humidity: 58%
+ Cloudiness: sky is clear
+   Pressure: 1029 hpa
+       Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 ```
 
 You can set this permanently by adding the set command in your `init.fish` file.
