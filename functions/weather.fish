@@ -1,23 +1,29 @@
-function weather -d "Displays current local weather info"
-  if not available jq
-    echo "The jq program is required to parse weather data."
-    echo "See https://stedolan.github.io/jq/ for details."
-    return 1
+function weather -d "Displays weather info"
+  # Determine the location to use.
+  if test (count $argv) -eq 0
+    set location (weather.location)
+
+    # Fetch weather data based on the location.
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" lat=$location[1] lon=$location[2] APPID=$weather_api_key)
+      echo "Unable to fetch weather data; please try again later."
+      return 1
+    end
+  else
+    # Fetch weather based on a search query.
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$argv" APPID=$weather_api_key)
+      echo "Unable to fetch weather data; please try again later."
+      return 1
+    end
+
+    set location (echo $json | jq -r '.coord.lat, .coord.lon, .name, .sys.country')
   end
 
-  set -l location (weather.location)
   printf "Weather for $location[3], $location[4]\n\n"
 
-  # Fetch weather data based on the location
-  if not set weather_data (weather.fetch "http://api.openweathermap.org/data/2.5/weather?lat=$location[1]&lon=$location[2]&APPID=$__weather_api_key")
-    echo "Unable to fetch weather data; please try again later."
-    return 1
-  end
-
-  set temp (echo $weather_data | jq '.main.temp')
-  set wind_speed (echo $weather_data | jq '.wind.speed')
-  set wind_gust (echo $weather_data | jq '.wind.gust')
-  set wind_deg (echo $weather_data | jq '.wind.deg')
+  set temp (echo $json | jq '.main.temp')
+  set wind_speed (echo $json | jq '.wind.speed')
+  set wind_gust (echo $json | jq '.wind.gust')
+  set wind_deg (echo $json | jq '.wind.deg')
 
   # Get the cardinal direction from the heading
   set directions N NE E SE S SW W NW N
@@ -25,9 +31,9 @@ function weather -d "Displays current local weather info"
 
   # Display forecast summary
   echo "Temperature: "(__weather_print_temperature $temp)
-  echo "   Humidity: "(echo $weather_data | jq '.main.humidity')"%"
-  echo " Cloudiness: "(echo $weather_data | jq -r '.weather[0].description')
-  echo "   Pressure: "(echo $weather_data | jq '.main.pressure')" hpa"
+  echo "   Humidity: "(echo $json | jq '.main.humidity')"%"
+  echo " Cloudiness: "(echo $json | jq -r '.weather[0].description')
+  echo "   Pressure: "(echo $json | jq '.main.pressure')" hpa"
   echo -n "       Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s"
   if test $wind_gust -eq null
     echo "gusting to $wind_gust m/s"
