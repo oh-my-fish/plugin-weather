@@ -1,4 +1,10 @@
 function weather -d "Displays weather info"
+  # Display help message.
+  if begin; contains -- -h $argv; or contains -- --help $argv; end
+    weather.help
+    return 0
+  end
+
   # Determine the location to use.
   if test (count $argv) -eq 0
     set location (weather.location)

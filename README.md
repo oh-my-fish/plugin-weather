@@ -20,6 +20,8 @@ $ omf install weather
 
 ## Usage
 
+To view a detailed usage guide, run `weather --help`.
+
 ```fish
 $ weather
 Weather for Madison, United States
