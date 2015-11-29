@@ -16,18 +16,21 @@ function weather.fetch -d "Fetches data from a URL backed by a cache"
 end
 
 function __md5
+  # Use GNU coreutils if available.
   if available md5sum
-    echo $argv[1] | md5sum | cut -d " " -f 1
+    echo $argv[1] | md5sum | cut -d ' ' -f 1
     return 0
   end
 
+  # Use builtin md5 tool in OS X.
   if available md5
-    echo $argv[1] | md5 | cut -d " " -f 2
+    echo $argv[1] | md5 | cut -d '=' -f 2 | tr -d '[:space:]'
     return 0
   end
 
+  # Try using openssl.
   if available openssl
-    echo $argv[1] | openssl md5 | cut -d " " -f 2
+    echo $argv[1] | openssl md5 | cut -d '=' -f 2 | tr -d '[:space:]'
     return 0
   end
 
