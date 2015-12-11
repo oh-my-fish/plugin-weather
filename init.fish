@@ -1,11 +1,4 @@
 function init --on-event init_weather
-  # Check external dependent programs.
-  if not available jq
-    echo "The jq program is required to parse weather data."
-    echo "See https://stedolan.github.io/jq for details."
-    return 1
-  end
-
   # Set the default temperature units to use. Options are:
   #   default
   #   celsius

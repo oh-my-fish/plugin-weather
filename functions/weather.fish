@@ -1,4 +1,11 @@
 function weather -d "Displays weather info"
+  # Check external dependent programs.
+  if not available jq
+    echo "The jq program is required to parse weather data."
+    echo "See https://stedolan.github.io/jq for details."
+    return 1
+  end
+
   # Display help message.
   if begin; contains -- -h $argv; or contains -- --help $argv; end
     weather.help
