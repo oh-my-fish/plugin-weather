@@ -22,15 +22,15 @@ function __md5
     return 0
   end
 
-  # Use builtin md5 tool in OS X.
+  # Use BSD md5 utility if available.
   if available md5
-    echo $argv[1] | md5 | cut -d '=' -f 2 | tr -d '[:space:]'
+    md5 -s "$argv[1]" -q
     return 0
   end
 
   # Try using openssl.
   if available openssl
-    echo $argv[1] | openssl md5 | cut -d '=' -f 2 | tr -d '[:space:]'
+    echo $argv[1] | openssl md5 -r | cut -d ' ' -f 1
     return 0
   end
 
