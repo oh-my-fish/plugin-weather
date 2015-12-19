@@ -24,7 +24,7 @@ function __md5
 
   # Use BSD md5 utility if available.
   if available md5
-    md5 -s "$argv[1]" -q
+    md5 -q -s "$argv[1]"
     return 0
   end
 
