@@ -11,6 +11,10 @@ Plugin for [Oh My Fish][omf-link].
 
 Uses your IP address to determine your location and find relevant weather data anywhere in the world.
 
+## Prerequisites
+
+This plugin depends on [jq](https://stedolan.github.io/jq/). Version **1.5+**
+
 ## Install
 
 ```fish
