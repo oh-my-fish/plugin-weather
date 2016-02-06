@@ -1,4 +1,6 @@
 function weather -d "Displays weather info"
+  set -l api_key (config weather --get api-key)
+
   # Check external dependent programs.
   if not available jq
     echo "The jq program is required to parse weather data."
@@ -21,13 +23,13 @@ function weather -d "Displays weather info"
     set location (weather.location)
 
     # Fetch weather data based on the location.
-    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" lat=$location[1] lon=$location[2] APPID=$weather_api_key)
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" lat=$location[1] lon=$location[2] APPID=$api_key)
       echo "Unable to fetch weather data; please try again later."
       return 1
     end
   else
     # Fetch weather based on a search query.
-    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$argv" APPID=$weather_api_key)
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$argv" APPID=$api_key)
       echo "Unable to fetch weather data; please try again later."
       return 1
     end
@@ -67,14 +69,10 @@ end
 #
 # Arguments:
 #   1: The temperature to display in Kelvin.
-#
-# The units displayed depend on the global `temperature_units` variable.
 function __weather_print_temperature
   set kelvin $argv[1]
 
-  if not set -q temperature_units
-    set temperature_units default
-  end
+  set -l temperature_units (config weather --get temperature-units)
 
   if test "$temperature_units" = "kelvin"
     echo "$kelvin K"

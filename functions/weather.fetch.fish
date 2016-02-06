@@ -1,5 +1,6 @@
 function weather.fetch -d "Fetches data from a URL backed by a cache"
   set md5 (__md5 "$argv")
+  set cache_age (config weather -g cache-age)
 
   if test (count $argv) -gt 1
     for param in $argv[2..-1]
@@ -7,7 +8,7 @@ function weather.fetch -d "Fetches data from a URL backed by a cache"
     end
   end
 
-  if not find /tmp/$md5.url -mmin +$weather_cache_age > /dev/null ^ /dev/null
+  if not find /tmp/$md5.url -mmin +$cache_age > /dev/null ^ /dev/null
     curl -Gs $flags $argv[1] > /tmp/$md5.url
       or return 1
   end

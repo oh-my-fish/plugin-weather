@@ -1,5 +1,7 @@
 function weather.forecast -d "Displays weather forecast lines"
-  if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/forecast?lat=$argv[1]&lon=$argv[2]&APPID=$weather_api_key")
+  set -l api_key (config weather --get api-key)
+
+  if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/forecast?lat=$argv[1]&lon=$argv[2]&APPID=$api_key")
     echo "Unable to fetch weather data; please try again later."
     return 1
   end
@@ -14,10 +16,10 @@ function weather.forecast -d "Displays weather forecast lines"
     set rain $rain (echo $item | jq -r '.rain["3h"] // .snow["3h"] // 0')
   end
 
-  printf "  Temperature: %s\n" (shark $temp)
+  printf "  Temperature: %s\n" (echo $temp | shark)
   printf "               %s\n\n" (__print_days_strip $days)
 
-  printf "Precipitation: %s\n" (shark $rain)
+  printf "Precipitation: %s\n" (echo $rain | shark)
   printf "               %s\n" (__print_days_strip $days)
 end
 
