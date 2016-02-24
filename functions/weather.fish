@@ -2,7 +2,7 @@ function weather -d "Displays weather info"
   set -l api_key (config weather --get api-key)
 
   # Check external dependent programs.
-  if not available jq
+  if not type -q jq
     echo "The jq program is required to parse weather data."
     echo "See https://stedolan.github.io/jq for details."
     return 1

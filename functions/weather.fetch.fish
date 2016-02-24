@@ -18,19 +18,19 @@ end
 
 function __md5
   # Use GNU coreutils if available.
-  if available md5sum
+  if type -q md5sum
     echo $argv[1] | md5sum | cut -d ' ' -f 1
     return 0
   end
 
   # Use BSD md5 utility if available.
-  if available md5
+  if type -q md5
     md5 -q -s "$argv[1]"
     return 0
   end
 
   # Try using openssl.
-  if available openssl
+  if type -q openssl
     echo $argv[1] | openssl md5 -r | cut -d ' ' -f 1
     return 0
   end

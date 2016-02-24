@@ -1,1 +1,1 @@
-test available weather
+test type -q weather
