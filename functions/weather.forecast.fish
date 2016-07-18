@@ -16,10 +16,10 @@ function weather.forecast -d "Displays weather forecast lines"
     set rain $rain (echo $item | jq -r '.rain["3h"] // .snow["3h"] // 0')
   end
 
-  printf "  Temperature: %s\n" (echo $temp | shark)
+  printf "  Temperature: %s\n" (spark $temp)
   printf "               %s\n\n" (__print_days_strip $days)
 
-  printf "Precipitation: %s\n" (echo $rain | shark)
+  printf "Precipitation: %s\n" (spark $rain)
   printf "               %s\n" (__print_days_strip $days)
 end
 
