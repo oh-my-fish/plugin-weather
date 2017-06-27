@@ -20,7 +20,7 @@ end
 
 function __weather_get_ip -d "Get the current device's public IP address"
   # Attempt to get our external IP using the OpenDNS resolver.
-  if test "$__weather_system_dns" -eq "1"
+  if set -q __weather_system_dns
     if not set ip (dig +short myip.opendns.com)
       return 1
     end
