@@ -55,7 +55,7 @@ You can customize the display of weather data using global variables. By default
 You can see the results by changing the value and running `weather` again:
 
 ```fish
-$ set -g temperature_units celsius
+$ config weather -s temperature-units celsius
 $ weather
 Temperature: 14.37 °C
    Humidity: 58%
@@ -64,7 +64,11 @@ Temperature: 14.37 °C
        Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 ```
 
-You can set this permanently by adding the set command in your `init.fish` file.
+You can set this permanently by adding the `config weather -s temperature-units` command in your `.config/omf/init.fish` file:
+```fish
+config weather -s temperature-units < celsius | fahrenheit | kelvin >
+```
+
 
 You can also configure the weather command to use the system default DNS resolver to fetch your IP address if one is configured.
 
