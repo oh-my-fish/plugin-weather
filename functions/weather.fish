@@ -6,10 +6,14 @@ function weather -d "Displays weather info"
     echo "The jq program is required to parse weather data."
     echo "See https://stedolan.github.io/jq for details."
     return 1
-  else if math (jq --version | cut -d - -f 2)"<1.5" > /dev/null
-    echo "You must have jq version 1.5 or newer installed to parse weather data."
-    echo "You can download the latest version of jq from https://stedolan.github.io/jq."
-    return 1
+  else
+    set -l jq_version (jq --version 2>&1 | tr -dC '[:digit:].')
+    if math "$jq_version<1.5" > /dev/null
+      echo "jq version $jq_version detected"
+      echo "You must have jq version 1.5 or newer installed to parse weather data."
+      echo "You can download the latest version of jq from https://stedolan.github.io/jq."
+      return 1
+    end
   end
 
   # Display help message.
