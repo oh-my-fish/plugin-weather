@@ -48,6 +48,13 @@ function weather -d "Displays weather info"
   set wind_gust (echo $json | jq '.wind.gust')
   set wind_deg (echo $json | jq '.wind.deg')
 
+  # convert m/s to km/h
+  set wind_speed_kmh ( math -s 1 $wind_speed \* 3.6 )
+  set  wind_gust_kmh ( math -s 1  $wind_gust \* 3.6 )
+
+  # If we want miles per hour
+  #set wind_speed_mph ( math -s 1 $wind_speed \* 2.23694 )
+
   # Get the cardinal direction from the heading
   set directions N NE E SE S SW W NW N
   set wind_dir $directions[(math "(($wind_deg % 360) / 45) + 1")]
@@ -57,9 +64,9 @@ function weather -d "Displays weather info"
   echo "   Humidity: "(echo $json | jq '.main.humidity')"%"
   echo " Cloudiness: "(echo $json | jq -r '.weather[0].description')
   echo "   Pressure: "(echo $json | jq '.main.pressure')" hpa"
-  echo -n "       Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s"
+  echo -n "       Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s ($wind_speed_kmh km/h)"
   if test $wind_gust = null
-    echo "gusting to $wind_gust m/s"
+    echo " gusting to $wind_gust m/s ($wind_gust_kmh km/h)"
   else
     echo
   end
