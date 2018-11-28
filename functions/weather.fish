@@ -65,7 +65,7 @@ function weather -d "Displays weather info"
   echo " Cloudiness: "(echo $json | jq -r '.weather[0].description')
   echo "   Pressure: "(echo $json | jq '.main.pressure')" hpa"
   echo -n "       Wind: from $wind_dir ($wind_deg°) at $wind_speed m/s ($wind_speed_kmh km/h)"
-  if test $wind_gust = null
+  if not test $wind_gust = null
     echo " gusting to $wind_gust m/s ($wind_gust_kmh km/h)"
   else
     echo
