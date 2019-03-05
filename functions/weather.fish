@@ -8,7 +8,7 @@ function weather -d "Displays weather info"
     return 1
   else
     set -l jq_version (jq --version 2>&1 | tr -dC '[:digit:].')
-    if math "$jq_version<1.5" > /dev/null
+    if test "$jq_version" -lt 1.5
       echo "jq version $jq_version detected"
       echo "You must have jq version 1.5 or newer installed to parse weather data."
       echo "You can download the latest version of jq from https://stedolan.github.io/jq."
@@ -50,14 +50,16 @@ function weather -d "Displays weather info"
 
   # convert m/s to km/h
   set wind_speed_kmh ( math -s 1 $wind_speed \* 3.6 )
-  set  wind_gust_kmh ( math -s 1  $wind_gust \* 3.6 )
+  if test -n "$wind_gust" -a "$wind_gust" != "null"
+    set wind_gust_kmh ( math -s 1 $wind_gust \* 3.6 )
+  end
 
   # If we want miles per hour
   #set wind_speed_mph ( math -s 1 $wind_speed \* 2.23694 )
 
   # Get the cardinal direction from the heading
   set directions N NE E SE S SW W NW N
-  set wind_dir $directions[(math "(($wind_deg % 360) / 45) + 1")]
+  set wind_dir $directions[(math -s 0 "(($wind_deg % 360) / 45) + 1")]
 
   # Display forecast summary
   echo "Temperature: "(__weather_print_temperature $temp)
