@@ -22,22 +22,21 @@ function __weather_get_ip -d "Get the current device's public IP address"
   # Attempt to get our external IP using the OpenDNS resolver.
   if type -q dig
     if set -q __weather_system_dns
-      if not set ip (dig +short myip.opendns.com)
-        return 1
+      if set ip (dig +short myip.opendns.com 2>/dev/null)
+        echo $ip
+        return
       end
     else
-      if not set ip (dig +short myip.opendns.com @resolver1.opendns.com)
-        return 1
+      if set ip (dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)
+        echo $ip
+        return
       end
     end
   end
 
   # Attempt to get our external IP using a web service.
-  if test -z $ip
-    if not set ip (weather.fetch "http://ipecho.net/plain")
-      return 1
-    end
+  if set ip (weather.fetch "http://ipecho.net/plain")
+    echo $ip
   end
 
-  echo $ip
 end
