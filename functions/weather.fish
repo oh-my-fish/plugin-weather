@@ -8,7 +8,7 @@ function weather -d "Displays weather info"
     return 1
   else
     set -l jq_version (jq --version 2>&1 | tr -dC '[:digit:].')
-    if test "$jq_version" -lt 1.5
+    if test "$jq_version" -lt 1.5 2> /dev/null
       echo "jq version $jq_version detected"
       echo "You must have jq version 1.5 or newer installed to parse weather data."
       echo "You can download the latest version of jq from https://stedolan.github.io/jq."
