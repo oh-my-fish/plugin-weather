@@ -59,7 +59,12 @@ function weather -d "Displays weather info"
 
   # Get the cardinal direction from the heading
   set directions N NE E SE S SW W NW N
-  set wind_dir $directions[(math -s 0 "(($wind_deg % 360) / 45) + 1")]
+  if test (echo $version | cut -d. -f1) -lt 3
+    set wind_deg_octant (math -s 0 "(($wind_deg % 360) / 45) + 1")
+  else
+    set wind_deg_octant (math "round(($wind_deg % 360) / 45) + 1")
+  end
+  set wind_dir $directions[$wind_deg_octant]
 
   # Display forecast summary
   echo "Temperature: "(__weather_print_temperature $temp)
