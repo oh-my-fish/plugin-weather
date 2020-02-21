@@ -23,7 +23,11 @@ function weather -d "Displays weather info"
   end
 
   # Determine the location to use.
-  if test (count $argv) -eq 0
+  set loc (config weather --get location)
+  if test (count $argv) -ne 0
+    set loc $argv
+  end
+  if test -z $loc
     set location (weather.location)
 
     # Fetch weather data based on the location.
@@ -33,7 +37,7 @@ function weather -d "Displays weather info"
     end
   else
     # Fetch weather based on a search query.
-    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$argv" APPID=$api_key)
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$loc" APPID=$api_key)
       echo "Unable to fetch weather data; please try again later."
       return 1
     end
