@@ -17,7 +17,7 @@ function weather -d "Displays weather info"
   end
 
   # Display help message.
-  if begin; contains -- -h $argv; or contains -- --help $argv; end
+  if begin; set -q $argv; or contains -- -h $argv; or contains -- --help $argv; end
     weather.help
     return 0
   end
