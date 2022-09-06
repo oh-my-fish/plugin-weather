@@ -31,13 +31,13 @@ function weather -d "Displays weather info"
     set location (weather.location)
 
     # Fetch weather data based on the location.
-    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" lat=$location[1] lon=$location[2] APPID=$api_key)
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" lat=$location[1] lon=$location[2] appid=$api_key)
       echo "Unable to fetch weather data; please try again later."
       return 1
     end
   else
     # Fetch weather based on a search query.
-    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$loc" APPID=$api_key)
+    if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/weather" "q=$loc" appid=$api_key)
       echo "Unable to fetch weather data; please try again later."
       return 1
     end
