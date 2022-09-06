@@ -1,7 +1,7 @@
 function weather.forecast -d "Displays weather forecast lines"
   set -l api_key (config weather --get api-key)
 
-  if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/forecast?lat=$argv[1]&lon=$argv[2]&APPID=$api_key")
+  if not set json (weather.fetch "http://api.openweathermap.org/data/2.5/forecast?lat=$argv[1]&lon=$argv[2]&appid=$api_key")
     echo "Unable to fetch weather data; please try again later."
     return 1
   end
