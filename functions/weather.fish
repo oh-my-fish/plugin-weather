@@ -47,6 +47,13 @@ function weather -d "Displays weather info"
 
   printf "Weather for $location[3], $location[4]\n\n"
 
+  set cod (echo $json | jq .cod 2>/dev/null)
+  if test "$cod" != "200"
+    echo "Unable to parse weather data; please try again later."
+    echo $json | jq -r .message
+    return
+  end
+
   set temp (echo $json | jq '.main.temp')
   set wind_speed (echo $json | jq '.wind.speed')
   set wind_gust (echo $json | jq '.wind.gust')
