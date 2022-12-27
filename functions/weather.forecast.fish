@@ -6,17 +6,21 @@ function weather.forecast -d "Displays weather forecast lines"
     return 1
   end
 
+  set counter 0
+  set progress "/" "-" "\\" "|"
   set items (echo $json | jq -c '.list[]')
   for item in $items
+    printf "\r%s" $progress[(math "$counter % 4 + 1")]
     set day (echo $item | jq -r '.dt | strftime("%d/%m")')
     contains $day $days
       or set days $days $day
 
     set temp $temp (echo $item | jq -r '.main.temp')
     set rain $rain (echo $item | jq -r '.rain["3h"] // .snow["3h"] // 0')
+    set counter (math $counter + 1)
   end
 
-  printf "  Temperature: %s\n" (spark $temp)
+  printf "\r  Temperature: %s\n" (spark $temp)
   printf "               %s\n\n" (__print_days_strip $days)
 
   printf "Precipitation: %s\n" (spark $rain)
