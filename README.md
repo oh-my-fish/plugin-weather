@@ -12,6 +12,9 @@ Plugin for [Oh My Fish][omf-link].
 Uses your IP address to determine your location and find relevant weather data
 anywhere in the world.
 
+It fetches data from [OpenWeather][] and an API Key is needed. Please, access
+https://home.openweathermap.org/api_keys to create a new one.
+
 ## Prerequisites
 
 This plugin depends on [jq](https://stedolan.github.io/jq/). Version **1.5+**
@@ -23,6 +26,13 @@ $ omf install weather
 ```
 
 ## Usage
+
+Before using, make sure to set the [OpenWeather API Key][OpenWeather]
+accordingly:
+
+```
+config weather -s api-key <API_KEY>
+```
 
 To view a detailed usage guide, run `weather --help`.
 
@@ -90,3 +100,4 @@ $ set -g __weather_system_dns 1
 [contributors]: https://github.com/oh-my-fish/plugin-weather/graphs/contributors
 [omf-link]: https://www.github.com/oh-my-fish/oh-my-fish
 [license-badge]: https://img.shields.io/badge/license-MIT-007EC7.svg?style=flat-square
+[OpenWeather]: https://home.openweathermap.org/api_keys
