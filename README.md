@@ -9,7 +9,11 @@
 
 Plugin for [Oh My Fish][omf-link].
 
-Uses your IP address to determine your location and find relevant weather data anywhere in the world.
+Uses your IP address to determine your location and find relevant weather data
+anywhere in the world.
+
+It fetches data from [OpenWeather][] and an API Key is needed. Please, access
+https://home.openweathermap.org/api_keys to create a new one.
 
 ## Prerequisites
 
@@ -21,8 +25,14 @@ This plugin depends on [jq](https://stedolan.github.io/jq/). Version **1.5+**
 $ omf install weather
 ```
 
-
 ## Usage
+
+Before using, make sure to set the [OpenWeather API Key][OpenWeather]
+accordingly:
+
+```
+config weather -s api-key <API_KEY>
+```
 
 To view a detailed usage guide, run `weather --help`.
 
@@ -44,9 +54,12 @@ Precipitation: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁�
                28/11  29/11  30/11  01/12  02/12  03/12
 ```
 
-
 ## Configuring
-You can customize the display of weather data using global variables. By default, both Celsius and Fahrenheit is displayed for the temperature. You can override this by specifying a particular unit to use in `$temperature_units`. Valid options are:
+
+You can customize the display of weather data using global variables. By
+default, both Celsius and Fahrenheit is displayed for the temperature. You can
+override this by specifying a particular unit to use in `$temperature_units`.
+Valid options are:
 
 - `celsius`
 - `fahrenheit`
@@ -64,26 +77,27 @@ Temperature: 14.37 °C
        Wind: from NE (60°) at 7.2 m/s gusting to 10.8 m/s
 ```
 
-You can set this permanently by adding the `config weather -s temperature-units` command in your `.config/omf/init.fish` file:
+You can set this permanently by adding the `config weather -s temperature-units`
+command in your `.config/omf/init.fish` file:
+
 ```fish
 config weather -s temperature-units < celsius | fahrenheit | kelvin >
 ```
 
-
-You can also configure the weather command to use the system default DNS resolver to fetch your IP address if one is configured.
+You can also configure the weather command to use the system default DNS
+resolver to fetch your IP address if one is configured.
 
 ```fish
 $ set -g __weather_system_dns 1
 ```
 
-
 # License
 
 [MIT][mit] © [coderstephen][author] et [al][contributors]
 
-
-[mit]:            http://opensource.org/licenses/MIT
-[author]:         http://github.com/coderstephen
-[contributors]:   https://github.com/oh-my-fish/plugin-weather/graphs/contributors
-[omf-link]:       https://www.github.com/oh-my-fish/oh-my-fish
-[license-badge]:  https://img.shields.io/badge/license-MIT-007EC7.svg?style=flat-square
+[mit]: http://opensource.org/licenses/MIT
+[author]: http://github.com/coderstephen
+[contributors]: https://github.com/oh-my-fish/plugin-weather/graphs/contributors
+[omf-link]: https://www.github.com/oh-my-fish/oh-my-fish
+[license-badge]: https://img.shields.io/badge/license-MIT-007EC7.svg?style=flat-square
+[OpenWeather]: https://home.openweathermap.org/api_keys
