@@ -10,8 +10,11 @@ function weather.fetch -d "Fetches data from a URL backed by a cache"
 
   set cache_file (find /tmp/$md5.url -mmin -$cache_age 2>/dev/null)
   if test -z "$cache_file"
-    curl -Gs $flags $argv[1] > /tmp/$md5.url
-      or return 1
+    curl -fGs $flags $argv[1] > /tmp/$md5.url
+      or begin
+        rm /tmp/$md5.url
+        return 1
+      end
   end
 
   cat /tmp/$md5.url
